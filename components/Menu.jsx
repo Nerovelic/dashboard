@@ -14,8 +14,8 @@ const menuRoutes = [
 function Menu() {
   return (
     <div className="w-[15%] p-5 bg-[#F0C890] h-screen">
-      <h1 className="text-2xl">Menu</h1>
-      <ul>
+      <h1 className="text-3xl text-center pb-5">Menu</h1>
+      <ul className="text-center  space-y-2 text-2xl">
         {menuRoutes.map((route, index) => (
           <li key={index}>
             <Link href={route.ruta} legacyBehavior>
