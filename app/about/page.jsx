@@ -3,20 +3,21 @@ import Perfil from "../assets/perfil.jpg";
 
 import { Abhaya_Libre } from "next/font/google";
 
-const abhaya = Abhaya_Libre({ subsets: ["latin"], weight:'600'});
-
+const abhaya = Abhaya_Libre({ subsets: ["latin"], weight: "600" });
 
 export default function About() {
   return (
     <div className="bg-[#6E4E21] min-h-screen flex items-center justify-center h-screen w-screen">
       <div className="bg-[#ffffff8c] p-8 rounded-lg shadow-md text-center">
-        <div className="relative w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-          <Image
-            src={Perfil}
-            width={500}
-            height={500}
-            alt="Mi foto de perfil"
-          />
+        <div className="relative w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-black">
+          <div className="relative w-full h-full rounded-full overflow-hidden">
+            <Image
+              src={Perfil}
+              width={500}
+              height={500}
+              alt="Mi foto de perfil"
+            />
+          </div>
         </div>
         <div className={abhaya.className}>
           <h1 className="text-3xl font-semibold mb-2">
