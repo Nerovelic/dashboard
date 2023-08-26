@@ -1,45 +1,124 @@
 "use client";
-const handleSubmit = (e) => {};
+import React, { useState } from "react";
 
 export default function Composicion() {
+  const [genero, setGenero] = useState("");
+  const [tricep, setTricep] = useState("");
+  const [bicep, setBicep] = useState("");
+  const [subescapular, setSubescapular] = useState("");
+  const [suprailiaco, setSuprailiaco] = useState("");
+  const [resultado, setResultado] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Validar que los campos necesarios estén completos
+    if (genero && tricep && bicep && subescapular && suprailiaco) {
+      const logX1 =
+        Math.log(
+          parseFloat(tricep) +
+            parseFloat(bicep) +
+            parseFloat(subescapular) +
+            parseFloat(suprailiaco)
+        ) || 0; // Asegurar que el valor no sea NaN
+
+      let DC;
+
+      if (genero === "hombre") {
+        DC = 1.1765 - 0.0744 * logX1;
+      } else if (genero === "mujer") {
+        DC = 1.1567 - 0.0717 * logX1;
+      }
+
+      const porcentajeGrasaCorporal = (495 / DC) - 450;
+      setResultado(porcentajeGrasaCorporal);
+    } else {
+      setResultado(null); // Resetear el resultado si falta información
+    }
+  };
+
+  const handlePositiveInputChange = (value, setValue) => {
+    if (value >= 0) {
+      setValue(value);
+    }
+  };
+
   return (
-    <div className=" bg-[#6E4E21] h-screen w-screen">
-      <h1 className=" text-center">Composicion Corporal</h1>
-      <form className="flex flex-col">
-        <label htmlFor="" className="mt-5">
-          Genero:
-          <input type="text" />
+    <div className="bg-[#6E4E21] h-screen w-screen flex flex-col items-center justify-start">
+      <h1 className="text-center mt-10">Composición Corporal</h1>
+      <form className="flex flex-col mt-10" onSubmit={handleSubmit}>
+        <label className="mt-5">
+          Género:
+          <select
+            value={genero}
+            onChange={(e) => setGenero(e.target.value)}
+            className="ml-2"
+          >
+            <option value="">Seleccionar</option>
+            <option value="hombre">Hombre</option>
+            <option value="mujer">Mujer</option>
+          </select>
         </label>
-        <label htmlFor="" className="mt-5">
+        <label className="mt-5 flex items-center">
           Peso:
-          <input type="text" />
+          <input type="text" className="ml-2" />
         </label>
-        <label htmlFor="" className="mt-5">
+        <label className="mt-5 flex items-center">
           Talla:
-          <input type="text" />
+          <input type="text" className="ml-2" />
         </label>
-        <label htmlFor="" className="mt-5">
+        <label className="mt-5 flex items-center">
           Edad:
-          <input type="text" />
+          <input type="text" className="ml-2" />
         </label>
-        <label htmlFor="" className="mt-5">
-          Bicipital:
-          <input type="text" />
+        <label className="mt-5 flex items-center">
+          Bíceps:
+          <input
+            type="number"
+            className="ml-2"
+            value={bicep}
+            onChange={(e) => handlePositiveInputChange(parseFloat(e.target.value), setBicep)}
+          />
         </label>
-        <label htmlFor="" className="mt-5">
-          Tricipital:
-          <input type="text" />
+        <label className="mt-5">
+          Tríceps:
+          <input
+            type="number"
+            className="ml-2"
+            value={tricep}
+            onChange={(e) => handlePositiveInputChange(parseFloat(e.target.value), setTricep)}
+          />
         </label>
-        <label htmlFor="" className="mt-5">
+        <label className="mt-5 flex items-center">
           Subescapular:
-          <input type="text" />
+          <input
+            type="number"
+            className="ml-2"
+            value={subescapular}
+            onChange={(e) => handlePositiveInputChange(parseFloat(e.target.value), setSubescapular)}
+          />
         </label>
-        <label htmlFor="" className="mt-5">
-          Cresta lleaca:
-          <input type="text" />
+        <label className="mt-5 flex items-center">
+          Cresta ileal:
+          <input
+            type="number"
+            className="ml-2"
+            value={suprailiaco}
+            onChange={(e) => handlePositiveInputChange(parseFloat(e.target.value), setSuprailiaco)}
+          />
         </label>
-        <input type="submit" value="Calcular" className=" border-4 cursor-pointer mt-5" />
+        <button
+          type="submit"
+          className="bg-white text-black border-4 cursor-pointer mt-5 py-1 px-3"
+        >
+          Calcular
+        </button>
       </form>
+
+      {resultado !== null && (
+        <div className="mt-5">
+          <p>Porcentaje de Grasa Corporal: {resultado.toFixed(2)}%</p>
+        </div>
+      )}
     </div>
   );
 }
