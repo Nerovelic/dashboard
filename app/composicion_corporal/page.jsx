@@ -11,7 +11,6 @@ export default function Composicion() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validar que los campos necesarios estén completos
     if (genero && tricep && bicep && subescapular && suprailiaco) {
       const logX1 =
         Math.log(
@@ -19,7 +18,7 @@ export default function Composicion() {
             parseFloat(bicep) +
             parseFloat(subescapular) +
             parseFloat(suprailiaco)
-        ) || 0; // Asegurar que el valor no sea NaN
+        ) || 0; 
 
       let DC;
 
@@ -32,7 +31,7 @@ export default function Composicion() {
       const porcentajeGrasaCorporal = (495 / DC) - 450;
       setResultado(porcentajeGrasaCorporal);
     } else {
-      setResultado(null); // Resetear el resultado si falta información
+      setResultado(null); 
     }
   };
 
@@ -43,10 +42,11 @@ export default function Composicion() {
   };
 
   return (
-    <div className="bg-[#6E4E21] h-screen w-screen flex flex-col items-center justify-start">
-      <h1 className="text-center mt-10">Composición Corporal</h1>
+    <div className="bg-[#6E4E21] h-screen w-screen flex flex-col items-center justify-start pt-8">
+      <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center">
+      <h1 className="text-center mt-2">Composición Corporal</h1>
       <form className="flex flex-col mt-10" onSubmit={handleSubmit}>
-        <label className="mt-5">
+        <label className="mt-[-5%] ml-[-50%]">
           Género:
           <select
             value={genero}
@@ -79,7 +79,7 @@ export default function Composicion() {
             onChange={(e) => handlePositiveInputChange(parseFloat(e.target.value), setBicep)}
           />
         </label>
-        <label className="mt-5">
+        <label className="mt-5 ml-[-15%]">
           Tríceps:
           <input
             type="number"
@@ -119,6 +119,7 @@ export default function Composicion() {
           <p>Porcentaje de Grasa Corporal: {resultado.toFixed(2)}%</p>
         </div>
       )}
+      </div>
     </div>
   );
 }
