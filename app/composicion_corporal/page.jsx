@@ -8,12 +8,13 @@ export default function Composicion() {
   const [subescapular, setSubescapular] = useState("");
   const [suprailiaco, setSuprailiaco] = useState("");
   const [resultado, setResultado] = useState(null);
+  const [resultado2, setResultado2] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (genero && tricep && bicep && subescapular && suprailiaco) {
-      const logX1 =
-        Math.log(
+      const log10 =
+        Math.log10(
           parseFloat(tricep) +
             parseFloat(bicep) +
             parseFloat(subescapular) +
@@ -23,15 +24,18 @@ export default function Composicion() {
       let DC;
 
       if (genero === "hombre") {
-        DC = 1.1765 - 0.0744 * logX1;
+        DC = 1.1765 - 0.0744 * log10;
       } else if (genero === "mujer") {
-        DC = 1.1567 - 0.0717 * logX1;
+        DC = 1.1567 - 0.0717 * log10;
       }
 
       const porcentajeGrasaCorporal = (495 / DC) - 450;
+      const DencidadCorporal = DC;
       setResultado(porcentajeGrasaCorporal);
+      setResultado2(DencidadCorporal);
     } else {
       setResultado(null); 
+      setResultado2(null);
     }
   };
 
@@ -42,7 +46,7 @@ export default function Composicion() {
   };
 
   return (
-    <div className="bg-[#6E4E21] h-screen w-screen flex flex-col items-center justify-start pt-8">
+    <div className="bg-primary h-screen w-screen flex flex-col items-center justify-start pt-8">
       <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center">
       <h1 className="text-center mt-2">Composición Corporal</h1>
       <form className="flex flex-col mt-10" onSubmit={handleSubmit}>
@@ -108,15 +112,16 @@ export default function Composicion() {
         </label>
         <button
           type="submit"
-          className="bg-white text-black border-4 cursor-pointer mt-5 py-1 px-3"
+          className="bg-tertiary text-black border-4 cursor-pointer mt-5 py-1 px-3"
         >
           Calcular
         </button>
       </form>
 
-      {resultado !== null && (
+      {resultado !== null && resultado2 !== null &&(
         <div className="mt-5">
-          <p>Porcentaje de Grasa Corporal: {resultado.toFixed(2)}%</p>
+          <p>Porcentaje de Grasa Corporal: {resultado.toFixed(3)}%</p>
+          <p>Densidad Corporal: {resultado2.toFixed(3)}</p>
         </div>
       )}
       </div>

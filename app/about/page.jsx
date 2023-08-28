@@ -7,7 +7,7 @@ const abhaya = Abhaya_Libre({ subsets: ["latin"], weight: "600" });
 
 export default function About() {
   return (
-    <div className="bg-[#6E4E21] min-h-screen flex items-center justify-center h-screen w-screen">
+    <div className="bg-primary min-h-screen flex items-center justify-center h-screen w-screen">
       <div className="bg-[#ffffff8c] p-8 rounded-lg shadow-md text-center">
         <div className="relative w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-black">
           <div className="relative w-full h-full rounded-full overflow-hidden">
