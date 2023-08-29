@@ -206,8 +206,8 @@ export default function Composicion() {
             <div className="mt-5">
               <p>Porcentaje de Grasa Corporal: {resultado.toFixed(3)}%</p>
               <p>Densidad Corporal: {resultado2.toFixed(3)}</p>
-              <p>Masa Ósea: {masaOsea.toFixed(2)}</p>
-              <p>Masa Residual: {masaResidual.toFixed(2)}</p>
+              <p>Masa Ósea: {(masaOsea * 0.01).toFixed(3)} kg</p>
+              <p>Masa Residual: {(masaResidual).toFixed(3)} kg</p>
             </div>
           )}
       </div>
