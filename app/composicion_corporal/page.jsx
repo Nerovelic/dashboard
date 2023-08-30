@@ -9,6 +9,8 @@ export default function Composicion() {
   const [suprailiaco, setSuprailiaco] = useState("");
   const [biestiloideo, setBiestiloideo] = useState("");
   const [femur, setFemur] = useState("");
+  const [talla, setTalla] = useState("");
+  const [peso, setPeso] = useState("");
   const [resultado, setResultado] = useState(null);
   const [resultado2, setResultado2] = useState(null);
   const [masaOsea, setMasaOsea] = useState(null);
@@ -18,6 +20,8 @@ export default function Composicion() {
     e.preventDefault();
     if (
       genero &&
+      talla &&
+      peso &&
       tricep &&
       bicep &&
       subescapular &&
@@ -47,11 +51,12 @@ export default function Composicion() {
       setResultado2(DencidadCorporal);
 
       const masaOseaCalculation =
-        Math.pow(DencidadCorporal ** 2 * femur * biestiloideo * 400, 0.712) *
-        3.02;
+        Math.pow(talla / 100 ** 2 * femur / 100 * biestiloideo / 100 * 400, 0.712) * 3.02;
       setMasaOsea(masaOseaCalculation);
 
-      const peso = parseFloat(biestiloideo) + parseFloat(femur);
+      console.log(masaOseaCalculation);
+      console.log(masaResidualH);
+
       const masaResidualH = 24 / peso;
       const masaResidualM = 21 / peso;
       setMasaResidual(genero === "hombre" ? masaResidualH : masaResidualM);
@@ -70,7 +75,7 @@ export default function Composicion() {
   };
 
   return (
-    <div className="bg-primary h-screen w-screen grid place-items-center pt-8">
+    <div className="bg-primary h-screen w-screen grid place-items-center">
       <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center grid gap-5">
         <h1 className="text-center mt-2">Composición Corporal</h1>
         <form className="grid gap-5 mt-10" onSubmit={handleSubmit}>
@@ -89,13 +94,33 @@ export default function Composicion() {
             </label>
             <label>
               Peso:
-              <input type="text" className="ml-2" />
+              <input
+                type="number"
+                className="ml-2"
+                value={peso}
+                onChange={(e) =>
+                  handlePositiveInputChange(
+                    parseFloat(e.target.value),
+                    setPeso
+                  )
+                }
+              />
             </label>
           </div>
           <div className="grid grid-cols-2 gap-5">
             <label>
               Talla:
-              <input type="text" className="ml-2" />
+              <input
+                type="number"
+                className="ml-2"
+                value={talla}
+                onChange={(e) =>
+                  handlePositiveInputChange(
+                    parseFloat(e.target.value),
+                    setTalla
+                  )
+                }
+              />
             </label>
             <label>
               Edad:
@@ -206,7 +231,7 @@ export default function Composicion() {
             <div className="mt-5">
               <p>Porcentaje de Grasa Corporal: {resultado.toFixed(3)}%</p>
               <p>Densidad Corporal: {resultado2.toFixed(3)}</p>
-              <p>Masa Ósea: {(masaOsea * 0.01).toFixed(3)} kg</p>
+              <p>Masa Ósea: {(masaOsea).toFixed(3)} kg</p>
               <p>Masa Residual: {masaResidual.toFixed(3)} kg</p>
             </div>
           )}

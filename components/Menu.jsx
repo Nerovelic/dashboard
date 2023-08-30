@@ -12,6 +12,10 @@ const menuRoutes = [
   {
     ruta: "/composicion_corporal",
     label: "Composicion Corporal"
+  },
+  {
+    ruta:"/tabla",
+    label:"Tabla"
   }
 ];
 
