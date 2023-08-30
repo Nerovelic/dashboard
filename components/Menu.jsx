@@ -3,20 +3,16 @@ import Link from "next/link";
 const menuRoutes = [
   {
     ruta: "/",
-    label: "Inicio"
+    label: "Inicio",
   },
   {
     ruta: "/about",
-    label: "About"
+    label: "About",
   },
   {
     ruta: "/composicion_corporal",
-    label: "Composicion Corporal"
+    label: "Composicion Corporal",
   },
-  {
-    ruta:"/tabla",
-    label:"Tabla"
-  }
 ];
 
 function Menu() {
