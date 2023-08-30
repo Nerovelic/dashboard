@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Tabla from "../tabla/page";
 
 export default function Composicion() {
   const [genero, setGenero] = useState("");
@@ -11,10 +12,92 @@ export default function Composicion() {
   const [femur, setFemur] = useState("");
   const [talla, setTalla] = useState("");
   const [peso, setPeso] = useState("");
+  const [edad, setEdad] = useState("");
   const [resultado, setResultado] = useState(null);
   const [resultado2, setResultado2] = useState(null);
   const [masaOsea, setMasaOsea] = useState(null);
   const [masaResidual, setMasaResidual] = useState(null);
+  const [masaGrasa, setMasaGrasa] = useState(null);
+  const [masaMuscular, setMasaMuscular] = useState(null);
+  const [PorcentajeResidual, setMasaResidualPor] = useState(null);
+  const [PorcentajeOsea, setMasaOseaPor] = useState(null);
+  const [PorcentajeMuscular, setMuscularPor] = useState(null);
+
+  useEffect(() => {
+    const storedValues = JSON.parse(
+      localStorage.getItem("bodyCompositionValues")
+    );
+    if (storedValues) {
+      setGenero(storedValues.genero || "");
+      setTricep(storedValues.tricep || "");
+      setBicep(storedValues.bicep || "");
+      setSubescapular(storedValues.subescapular || "");
+      setSuprailiaco(storedValues.suprailiaco || "");
+      setBiestiloideo(storedValues.biestiloideo || "");
+      setFemur(storedValues.femur || "");
+      setTalla(storedValues.talla || "");
+      setPeso(storedValues.peso || "");
+      setEdad(storedValues.edad || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    const bodyCompositionValues = {
+      genero,
+      tricep,
+      bicep,
+      subescapular,
+      suprailiaco,
+      biestiloideo,
+      femur,
+      talla,
+      peso,
+      edad,
+    };
+    localStorage.setItem(
+      "bodyCompositionValues",
+      JSON.stringify(bodyCompositionValues)
+    );
+  }, [
+    genero,
+    tricep,
+    bicep,
+    subescapular,
+    suprailiaco,
+    biestiloideo,
+    femur,
+    talla,
+    peso,
+    edad,
+  ]);
+
+  const calculateMasaOsea = () => {
+    if (talla && biestiloideo && femur) {
+      const alturaAlCuadrado = Math.pow(parseFloat(talla), 2);
+      const masaOsea =
+        Math.pow(
+          ((((alturaAlCuadrado * parseFloat(biestiloideo)) / 100) *
+            parseFloat(femur)) /
+            100) *
+            400,
+          0.712
+        ) * 3.02;
+      return masaOsea;
+    }
+    return null;
+  };
+
+  const calculateResidualMass = () => {
+    if (genero && peso) {
+      const pesoKilogramos = parseFloat(peso);
+      if (genero === "hombre") {
+        return 0.24 * pesoKilogramos;
+      } else if (genero === "mujer") {
+        return 0.21 * pesoKilogramos;
+      }
+    }
+    return null;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,25 +129,26 @@ export default function Composicion() {
       }
 
       const porcentajeGrasaCorporal = 495 / DC - 450;
-      const DencidadCorporal = DC;
+      const masaGrasa = (porcentajeGrasaCorporal * peso) / 100;
+      const PorcentajeResidual = (calculateResidualMass() * 100) / peso;
+      const PorcentajeOsea = (calculateMasaOsea() * 100) / peso;
+      const masaMuscular = 100 - masaGrasa + masaOsea + masaResidual;
+      const PorcentajeMuscular = (masaMuscular * 100) / peso;
+      setMasaGrasa(masaGrasa);
       setResultado(porcentajeGrasaCorporal);
-      setResultado2(DencidadCorporal);
-
-      const masaOseaCalculation =
-        Math.pow(talla / 100 ** 2 * femur / 100 * biestiloideo / 100 * 400, 0.712) * 3.02;
-      setMasaOsea(masaOseaCalculation);
-
-      console.log(masaOseaCalculation);
-      console.log(masaResidualH);
-
-      const masaResidualH = 24 / peso;
-      const masaResidualM = 21 / peso;
-      setMasaResidual(genero === "hombre" ? masaResidualH : masaResidualM);
+      setResultado2(DC);
+      setMasaOsea(calculateMasaOsea());
+      setMasaResidual(calculateResidualMass());
+      setMasaResidualPor(PorcentajeResidual);
+      setMasaOseaPor(PorcentajeOsea);
+      setMuscularPor(PorcentajeMuscular);
+      setMasaMuscular(masaMuscular);
     } else {
       setResultado(null);
       setResultado2(null);
       setMasaOsea(null);
       setMasaResidual(null);
+      setMasaMuscular(null);
     }
   };
 
@@ -99,10 +183,7 @@ export default function Composicion() {
                 className="ml-2"
                 value={peso}
                 onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setPeso
-                  )
+                  handlePositiveInputChange(parseFloat(e.target.value), setPeso)
                 }
               />
             </label>
@@ -124,7 +205,14 @@ export default function Composicion() {
             </label>
             <label>
               Edad:
-              <input type="text" className="ml-2" />
+              <input
+                type="number"
+                className="ml-2"
+                value={edad}
+                onChange={(e) =>
+                  handlePositiveInputChange(parseFloat(e.target.value), setEdad)
+                }
+              />
             </label>
           </div>
           <div className="grid grid-cols-2 gap-5">
@@ -173,7 +261,7 @@ export default function Composicion() {
               />
             </label>
             <label>
-              Cresta ileal:
+              Suprailiaco:
               <input
                 type="number"
                 className="ml-2"
@@ -222,18 +310,49 @@ export default function Composicion() {
           >
             Calcular
           </button>
+          <button
+            type="button"
+            className="bg-tertiary text-black border-4 cursor-pointer mt-5 py-1 px-3"
+            onClick={() => {
+              localStorage.removeItem("bodyCompositionValues");
+              setGenero("");
+              setTricep("");
+              setBicep("");
+              setSubescapular("");
+              setSuprailiaco("");
+              setBiestiloideo("");
+              setFemur("");
+              setTalla("");
+              setPeso("");
+              setResultado(null);
+              setResultado2(null);
+              setMasaOsea(null);
+              setMasaResidual(null);
+              setEdad("");
+            }}
+          >
+            Limpiar Campos
+          </button>
         </form>
 
         {resultado !== null &&
           resultado2 !== null &&
           masaOsea !== null &&
-          masaResidual !== null && (
-            <div className="mt-5">
-              <p>Porcentaje de Grasa Corporal: {resultado.toFixed(3)}%</p>
-              <p>Densidad Corporal: {resultado2.toFixed(3)}</p>
-              <p>Masa Ósea: {(masaOsea).toFixed(3)} kg</p>
-              <p>Masa Residual: {masaResidual.toFixed(3)} kg</p>
-            </div>
+          PorcentajeOsea !== null &&
+          masaResidual !== null &&
+          PorcentajeResidual !== null &&
+          masaMuscular !== null &&
+          PorcentajeMuscular !== null && (
+            <Tabla
+              porcentajeGrasa={resultado}
+              masaGrasa={masaGrasa}
+              masaOsea={masaOsea}
+              PorcentajeOsea={PorcentajeOsea}
+              masaResidual={masaResidual}
+              PorcentajeResidual={PorcentajeResidual}
+              masaMuscular={masaMuscular}
+              PorcentajeMuscular={PorcentajeMuscular}
+            />
           )}
       </div>
     </div>
