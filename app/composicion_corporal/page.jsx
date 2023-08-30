@@ -132,7 +132,7 @@ export default function Composicion() {
       const masaGrasa = (porcentajeGrasaCorporal * peso) / 100;
       const PorcentajeResidual = (calculateResidualMass() * 100) / peso;
       const PorcentajeOsea = (calculateMasaOsea() * 100) / peso;
-      const masaMuscular = 100 - masaGrasa + masaOsea + masaResidual;
+      const masaMuscular = 100 - (masaGrasa + masaOsea + calculateResidualMass());
       const PorcentajeMuscular = (masaMuscular * 100) / peso;
       setMasaGrasa(masaGrasa);
       setResultado(porcentajeGrasaCorporal);
