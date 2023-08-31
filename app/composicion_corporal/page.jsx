@@ -73,7 +73,7 @@ export default function Composicion() {
 
   const calculateMasaOsea = () => {
     if (talla && biestiloideo && femur) {
-      const alturaAlCuadrado = Math.pow(parseFloat(talla), 2);
+      alturaAlCuadrado = Math.pow(parseFloat(talla), 2);
       const masaOsea =
         Math.pow(
           ((((alturaAlCuadrado * parseFloat(biestiloideo)) / 100) *
@@ -87,9 +87,11 @@ export default function Composicion() {
     return null;
   };
 
+  let alturaAlCuadrado = 0;
+
   const calculateResidualMass = () => {
     if (genero && peso) {
-      const pesoKilogramos = parseFloat(peso);
+      pesoKilogramos = parseFloat(peso);
       if (genero === "hombre") {
         return 0.24 * pesoKilogramos;
       } else if (genero === "mujer") {
@@ -98,6 +100,10 @@ export default function Composicion() {
     }
     return null;
   };
+
+  let pesoKilogramos = 0;
+
+  console.log(masaResidual);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -132,7 +138,7 @@ export default function Composicion() {
       const masaGrasa = (porcentajeGrasaCorporal * peso) / 100;
       const PorcentajeResidual = (calculateResidualMass() * 100) / peso;
       const PorcentajeOsea = (calculateMasaOsea() * 100) / peso;
-      const masaMuscular = 100 - (masaGrasa + masaOsea + calculateResidualMass());
+      const masaMuscular = pesoKilogramos/alturaAlCuadrado;
       const PorcentajeMuscular = (masaMuscular * 100) / peso;
       setMasaGrasa(masaGrasa);
       setResultado(porcentajeGrasaCorporal);
