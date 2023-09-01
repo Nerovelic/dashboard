@@ -103,8 +103,6 @@ export default function Composicion() {
 
   let pesoKilogramos = 0;
 
-  console.log(masaResidual);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -138,8 +136,9 @@ export default function Composicion() {
       const masaGrasa = (porcentajeGrasaCorporal * peso) / 100;
       const PorcentajeResidual = (calculateResidualMass() * 100) / peso;
       const PorcentajeOsea = (calculateMasaOsea() * 100) / peso;
-      const masaMuscular = pesoKilogramos/alturaAlCuadrado;
-      const PorcentajeMuscular = (masaMuscular * 100) / peso;
+      const PorcentajeMuscular =
+        100 - (porcentajeGrasaCorporal + PorcentajeResidual + PorcentajeOsea);
+      const masaMuscular = (PorcentajeMuscular * peso) / 100;
       setMasaGrasa(masaGrasa);
       setResultado(porcentajeGrasaCorporal);
       setResultado2(DC);
@@ -165,7 +164,7 @@ export default function Composicion() {
   };
 
   return (
-    <div className="bg-primary h-screen w-screen grid place-items-center">
+    <div className="bg-primary w-screen grid place-items-center">
       <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center grid gap-5">
         <h1 className="text-center mt-2">Composición Corporal</h1>
         <form className="grid gap-5 mt-10" onSubmit={handleSubmit}>
