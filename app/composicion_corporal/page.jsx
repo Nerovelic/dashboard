@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Tabla from "../tabla/page";
+import Table from "../table/page";
+import Graph from "../graph/page";
 
 export default function Composicion() {
   const [genero, setGenero] = useState("");
@@ -348,7 +349,7 @@ export default function Composicion() {
           PorcentajeResidual !== null &&
           masaMuscular !== null &&
           PorcentajeMuscular !== null && (
-            <Tabla
+            <Table
               porcentajeGrasa={resultado}
               masaGrasa={masaGrasa}
               masaOsea={masaOsea}
@@ -356,6 +357,22 @@ export default function Composicion() {
               masaResidual={masaResidual}
               PorcentajeResidual={PorcentajeResidual}
               masaMuscular={masaMuscular}
+              PorcentajeMuscular={PorcentajeMuscular}
+            />
+          )}
+        {resultado !== null &&
+          resultado2 !== null &&
+          masaOsea !== null &&
+          PorcentajeOsea !== null &&
+          masaResidual !== null &&
+          PorcentajeResidual !== null &&
+          masaMuscular !== null &&
+          PorcentajeMuscular !== null && (
+            <Graph
+              resultado={resultado}
+              resultado2={resultado2}
+              PorcentajeOsea={PorcentajeOsea}
+              PorcentajeResidual={PorcentajeResidual}
               PorcentajeMuscular={PorcentajeMuscular}
             />
           )}

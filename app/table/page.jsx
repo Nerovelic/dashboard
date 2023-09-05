@@ -1,4 +1,4 @@
-export default function Tabla({
+export default function Table({
   porcentajeGrasa,
   masaGrasa,
   masaOsea,
