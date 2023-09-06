@@ -161,8 +161,16 @@ export default function Composition() {
   // The `handlePositiveInputChange` function takes an event and a key as arguments. When a value is greater than or equal to zero in the event,
   // it updates the existing data (prevData) with the new value in the specified key using the propagation operator (`...`).
   const handlePositiveInputChange = (event, key) => {
-    const { value } = event.target;
-    if (value >= 0) {
+    let { value } = event.target;
+    // Remove leading and trailing blanks
+    value = value.trim();
+    // Regular expression to allow only positive integers or decimals,
+    // where .X is interpreted as 0.X
+    const regex = /^[+]?(?:\d+\.?|\d*\.\d+)?$/;
+    // Replace .X with 0.X if found.
+    value = value.replace(/^\./, "0.");
+    // Check that there is at least one digit before the decimal point.
+    if (regex.test(value) && value.indexOf(".") !== 0) {
       setData((prevData) => ({
         ...prevData,
         [key]: value,
