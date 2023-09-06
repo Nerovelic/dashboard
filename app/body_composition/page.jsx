@@ -47,8 +47,8 @@ export default function Composition() {
     localStorage.setItem("bodyCompositionValues", JSON.stringify(data));
   }, [data]);
 
-  // Esta función `calculateBoneMass` calcula la masa ósea basada en los valores de `size`, `bistyloid`, y `femur`, usando una fórmula específica.
-  // Luego, asigna el resultado a `boneMass`. Si falta algún valor, devuelve `0`.
+  // This `calculateBoneMass` function calculates bone mass based on the values of `size`, `bistyloid`, and `femur`, using a specific formula.
+  // Then, it assigns the result to `boneMass`. If any value is missing, it returns `0`.
   const calculateBoneMass = () => {
     if (data.size && data.bistyloid && data.femur) {
       heightSquared = Math.pow(parseFloat(data.size), 2);
