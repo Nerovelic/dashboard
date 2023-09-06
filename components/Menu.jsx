@@ -10,7 +10,7 @@ const menuRoutes = [
     label: "About",
   },
   {
-    ruta: "/composicion_corporal",
+    ruta: "/body_composition",
     label: "Composicion Corporal",
   },
 ];

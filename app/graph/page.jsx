@@ -2,26 +2,36 @@ import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 
 export default function Graph({
-  resultado,
-  resultado2,
-  PorcentajeOsea,
-  PorcentajeResidual,
-  PorcentajeMuscular,
+  result,
+  result2,
+  PercentageOsea,
+  PercentResidual,
+  MusclePercentage,
 }) {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (resultado !== null && resultado2 !== null) {
+    if (result !== null && result2 !== null) {
       const ctx = chartRef.current.getContext("2d");
 
       new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Porcentaje Grasa", "Porcentaje Osea", "Porcentaje Residual", "Porcentaje Muscular"],
+          labels: [
+            "Porcentaje Grasa",
+            "Porcentaje Osea",
+            "Porcentaje Residual",
+            "Porcentaje Muscular",
+          ],
           datasets: [
             {
               label: "Porcentaje",
-              data: [resultado, PorcentajeOsea, PorcentajeResidual, PorcentajeMuscular],
+              data: [
+                result,
+                PercentageOsea,
+                PercentResidual,
+                MusclePercentage,
+              ],
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
@@ -47,13 +57,7 @@ export default function Graph({
         },
       });
     }
-  }, [
-    resultado,
-    resultado2,
-    PorcentajeOsea,
-    PorcentajeResidual,
-    PorcentajeMuscular,
-  ]);
+  }, [result, result2, PercentageOsea, PercentResidual, MusclePercentage]);
 
   return (
     <div>

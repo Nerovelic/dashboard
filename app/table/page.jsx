@@ -1,12 +1,12 @@
 export default function Table({
   porcentajeGrasa,
-  masaGrasa,
-  masaOsea,
-  PorcentajeOsea,
-  masaResidual,
-  PorcentajeResidual,
-  masaMuscular,
-  PorcentajeMuscular,
+  fatMass,
+  boneMass,
+  PercentageOsea,
+  residualMass,
+  PercentResidual,
+  muscleMass,
+  MusclePercentage,
 }) {
   return (
     <div>
@@ -24,22 +24,22 @@ export default function Table({
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Grasa</td>
               <td className="py-2 px-4">{porcentajeGrasa.toFixed(3)}%</td>
-              <td className="py-2 px-4">{masaGrasa.toFixed(3)} kg</td>
+              <td className="py-2 px-4">{fatMass.toFixed(3)} kg</td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Osea</td>
-              <td className="py-2 px-4">{PorcentajeOsea.toFixed(3)}%</td>
-              <td className="py-2 px-4">{masaOsea.toFixed(3)} kg</td>
+              <td className="py-2 px-4">{PercentageOsea.toFixed(3)}%</td>
+              <td className="py-2 px-4">{boneMass.toFixed(3)} kg</td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Residual</td>
-              <td className="py-2 px-4">{PorcentajeResidual.toFixed(2)}%</td>
-              <td className="py-2 px-4">{masaResidual.toFixed(3)} kg</td>
+              <td className="py-2 px-4">{PercentResidual.toFixed(2)}%</td>
+              <td className="py-2 px-4">{residualMass.toFixed(3)} kg</td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Muscular</td>
-              <td className="py-2 px-4">{PorcentajeMuscular.toFixed(3)}%</td>
-              <td className="py-2 px-4">{masaMuscular.toFixed(3)} kg</td>
+              <td className="py-2 px-4">{MusclePercentage.toFixed(3)}%</td>
+              <td className="py-2 px-4">{muscleMass.toFixed(3)} kg</td>
             </tr>
           </tbody>
         </table>

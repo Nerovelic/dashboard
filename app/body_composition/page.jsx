@@ -3,158 +3,158 @@ import React, { useState, useEffect } from "react";
 import Table from "../table/page";
 import Graph from "../graph/page";
 
-export default function Composicion() {
-  const [genero, setGenero] = useState("");
+export default function Composition() {
+  const [genre, setGenre] = useState("");
   const [tricep, setTricep] = useState("");
   const [bicep, setBicep] = useState("");
-  const [subescapular, setSubescapular] = useState("");
-  const [suprailiaco, setSuprailiaco] = useState("");
-  const [biestiloideo, setBiestiloideo] = useState("");
+  const [subscapularis, setSubscapularis] = useState("");
+  const [suprailiac, setSuprailiac] = useState("");
+  const [bistyloid, setBistyloid] = useState("");
   const [femur, setFemur] = useState("");
-  const [talla, setTalla] = useState("");
-  const [peso, setPeso] = useState("");
-  const [edad, setEdad] = useState("");
-  const [resultado, setResultado] = useState(null);
-  const [resultado2, setResultado2] = useState(null);
-  const [masaOsea, setMasaOsea] = useState(null);
-  const [masaResidual, setMasaResidual] = useState(null);
-  const [masaGrasa, setMasaGrasa] = useState(null);
-  const [masaMuscular, setMasaMuscular] = useState(null);
-  const [PorcentajeResidual, setMasaResidualPor] = useState(null);
-  const [PorcentajeOsea, setMasaOseaPor] = useState(null);
-  const [PorcentajeMuscular, setMuscularPor] = useState(null);
+  const [size, setSize] = useState("");
+  const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
+  const [result, setResult] = useState(null);
+  const [result2, setResult2] = useState(null);
+  const [boneMass, setBoneMass] = useState(null);
+  const [residualMass, setResidualMass] = useState(null);
+  const [fatMass, setFatMass] = useState(null);
+  const [muscleMass, setMuscleMass] = useState(null);
+  const [PercentResidual, setResidualMassPer] = useState(null);
+  const [PercentageOsea, setBoneMassPer] = useState(null);
+  const [MusclePercentage, setMuscularPer] = useState(null);
 
   useEffect(() => {
     const storedValues = JSON.parse(
       localStorage.getItem("bodyCompositionValues")
     );
     if (storedValues) {
-      setGenero(storedValues.genero || "");
+      setGenre(storedValues.genre || "");
       setTricep(storedValues.tricep || "");
       setBicep(storedValues.bicep || "");
-      setSubescapular(storedValues.subescapular || "");
-      setSuprailiaco(storedValues.suprailiaco || "");
-      setBiestiloideo(storedValues.biestiloideo || "");
+      setSubscapularis(storedValues.subscapularis || "");
+      setSuprailiac(storedValues.suprailiac || "");
+      setBistyloid(storedValues.bistyloid || "");
       setFemur(storedValues.femur || "");
-      setTalla(storedValues.talla || "");
-      setPeso(storedValues.peso || "");
-      setEdad(storedValues.edad || "");
+      setSize(storedValues.size || "");
+      setWeight(storedValues.weight || "");
+      setAge(storedValues.age || "");
     }
   }, []);
 
   useEffect(() => {
     const bodyCompositionValues = {
-      genero,
+      genre,
       tricep,
       bicep,
-      subescapular,
-      suprailiaco,
-      biestiloideo,
+      subscapularis,
+      suprailiac,
+      bistyloid,
       femur,
-      talla,
-      peso,
-      edad,
+      size,
+      weight,
+      age,
     };
     localStorage.setItem(
       "bodyCompositionValues",
       JSON.stringify(bodyCompositionValues)
     );
   }, [
-    genero,
+    genre,
     tricep,
     bicep,
-    subescapular,
-    suprailiaco,
-    biestiloideo,
+    subscapularis,
+    suprailiac,
+    bistyloid,
     femur,
-    talla,
-    peso,
-    edad,
+    size,
+    weight,
+    age,
   ]);
 
-  const calculateMasaOsea = () => {
-    if (talla && biestiloideo && femur) {
-      alturaAlCuadrado = Math.pow(parseFloat(talla), 2);
-      const masaOsea =
+  const calculateBoneMass = () => {
+    if (size && bistyloid && femur) {
+      heightSquared = Math.pow(parseFloat(size), 2);
+      const boneMass =
         Math.pow(
-          ((((alturaAlCuadrado * parseFloat(biestiloideo)) / 100) *
+          ((((heightSquared * parseFloat(bistyloid)) / 100) *
             parseFloat(femur)) /
             100) *
             400,
           0.712
         ) * 3.02;
-      return masaOsea;
+      return boneMass;
     }
     return null;
   };
 
-  let alturaAlCuadrado = 0;
+  let heightSquared = 0;
 
   const calculateResidualMass = () => {
-    if (genero && peso) {
-      pesoKilogramos = parseFloat(peso);
-      if (genero === "hombre") {
-        return 0.24 * pesoKilogramos;
-      } else if (genero === "mujer") {
-        return 0.21 * pesoKilogramos;
+    if (genre && weight) {
+      weightKilograms = parseFloat(weight);
+      if (genre === "hombre") {
+        return 0.24 * weightKilograms;
+      } else if (genre === "mujer") {
+        return 0.21 * weightKilograms;
       }
     }
     return null;
   };
 
-  let pesoKilogramos = 0;
+  let weightKilograms = 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      genero &&
-      talla &&
-      peso &&
+      genre &&
+      size &&
+      weight &&
       tricep &&
       bicep &&
-      subescapular &&
-      suprailiaco &&
-      biestiloideo &&
+      subscapularis &&
+      suprailiac &&
+      bistyloid &&
       femur
     ) {
       const log10 =
         Math.log10(
           parseFloat(tricep) +
             parseFloat(bicep) +
-            parseFloat(subescapular) +
-            parseFloat(suprailiaco)
+            parseFloat(subscapularis) +
+            parseFloat(suprailiac)
         ) || 0;
 
       let DC;
 
-      if (genero === "hombre") {
+      if (genre === "hombre") {
         DC = 1.1765 - 0.0744 * log10;
-      } else if (genero === "mujer") {
+      } else if (genre === "mujer") {
         DC = 1.1567 - 0.0717 * log10;
       }
 
-      const porcentajeGrasaCorporal = 495 / DC - 450;
-      const masaGrasa = (porcentajeGrasaCorporal * peso) / 100;
-      const PorcentajeResidual = (calculateResidualMass() * 100) / peso;
-      const PorcentajeOsea = (calculateMasaOsea() * 100) / peso;
-      const PorcentajeMuscular =
-        100 - (porcentajeGrasaCorporal + PorcentajeResidual + PorcentajeOsea);
-      const masaMuscular = (PorcentajeMuscular * peso) / 100;
-      setMasaGrasa(masaGrasa);
-      setResultado(porcentajeGrasaCorporal);
-      setResultado2(DC);
-      setMasaOsea(calculateMasaOsea());
-      setMasaResidual(calculateResidualMass());
-      setMasaResidualPor(PorcentajeResidual);
-      setMasaOseaPor(PorcentajeOsea);
-      setMuscularPor(PorcentajeMuscular);
-      setMasaMuscular(masaMuscular);
+      const percentageFatCorporal = 495 / DC - 450;
+      const fatMass = (percentageFatCorporal * weight) / 100;
+      const PercentResidual = (calculateResidualMass() * 100) / weight;
+      const PercentageOsea = (calculateBoneMass() * 100) / weight;
+      const PercentageMuscular =
+        100 - (percentageFatCorporal + PercentResidual + PercentageOsea);
+      const muscleMass = (PercentageMuscular * weight) / 100;
+      setFatMass(fatMass);
+      setResult(percentageFatCorporal);
+      setResult2(DC);
+      setBoneMass(calculateBoneMass());
+      setResidualMass(calculateResidualMass());
+      setResidualMassPer(PercentResidual);
+      setBoneMassPer(PercentageOsea);
+      setMuscularPer(PercentageMuscular);
+      setMuscleMass(muscleMass);
     } else {
-      setResultado(null);
-      setResultado2(null);
-      setMasaOsea(null);
-      setMasaResidual(null);
-      setMasaMuscular(null);
+      setResult(null);
+      setResult2(null);
+      setBoneMass(null);
+      setResidualMass(null);
+      setMuscleMass(null);
     }
   };
 
@@ -173,8 +173,8 @@ export default function Composicion() {
             <label>
               Género:
               <select
-                value={genero}
-                onChange={(e) => setGenero(e.target.value)}
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
                 className="ml-2"
               >
                 <option value="">Seleccionar</option>
@@ -187,9 +187,12 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={peso}
+                value={weight}
                 onChange={(e) =>
-                  handlePositiveInputChange(parseFloat(e.target.value), setPeso)
+                  handlePositiveInputChange(
+                    parseFloat(e.target.value),
+                    setWeight
+                  )
                 }
               />
             </label>
@@ -200,12 +203,9 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={talla}
+                value={size}
                 onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setTalla
-                  )
+                  handlePositiveInputChange(parseFloat(e.target.value), setSize)
                 }
               />
             </label>
@@ -214,9 +214,9 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={edad}
+                value={age}
                 onChange={(e) =>
-                  handlePositiveInputChange(parseFloat(e.target.value), setEdad)
+                  handlePositiveInputChange(parseFloat(e.target.value), setAge)
                 }
               />
             </label>
@@ -257,11 +257,11 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={subescapular}
+                value={subscapularis}
                 onChange={(e) =>
                   handlePositiveInputChange(
                     parseFloat(e.target.value),
-                    setSubescapular
+                    setSubscapularis
                   )
                 }
               />
@@ -271,11 +271,11 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={suprailiaco}
+                value={suprailiac}
                 onChange={(e) =>
                   handlePositiveInputChange(
                     parseFloat(e.target.value),
-                    setSuprailiaco
+                    setSuprailiac
                   )
                 }
               />
@@ -286,11 +286,11 @@ export default function Composicion() {
               <input
                 type="number"
                 className="ml-2"
-                value={biestiloideo}
+                value={bistyloid}
                 onChange={(e) =>
                   handlePositiveInputChange(
                     parseFloat(e.target.value),
-                    setBiestiloideo
+                    setBistyloid
                   )
                 }
               />
@@ -321,59 +321,59 @@ export default function Composicion() {
             className="bg-tertiary text-black border-4 cursor-pointer mt-5 py-1 px-3"
             onClick={() => {
               localStorage.removeItem("bodyCompositionValues");
-              setGenero("");
+              setGenre("");
               setTricep("");
               setBicep("");
-              setSubescapular("");
-              setSuprailiaco("");
-              setBiestiloideo("");
+              setSubscapularis("");
+              setSuprailiac("");
+              setBistyloid("");
               setFemur("");
-              setTalla("");
-              setPeso("");
-              setResultado(null);
-              setResultado2(null);
-              setMasaOsea(null);
-              setMasaResidual(null);
-              setEdad("");
+              setSize("");
+              setWeight("");
+              setResult(null);
+              setResult2(null);
+              setBoneMass(null);
+              setResidualMass(null);
+              setAge("");
             }}
           >
             Limpiar Campos
           </button>
         </form>
 
-        {resultado !== null &&
-          resultado2 !== null &&
-          masaOsea !== null &&
-          PorcentajeOsea !== null &&
-          masaResidual !== null &&
-          PorcentajeResidual !== null &&
-          masaMuscular !== null &&
-          PorcentajeMuscular !== null && (
+        {result !== null &&
+          result2 !== null &&
+          boneMass !== null &&
+          PercentageOsea !== null &&
+          residualMass !== null &&
+          PercentResidual !== null &&
+          muscleMass !== null &&
+          MusclePercentage !== null && (
             <Table
-              porcentajeGrasa={resultado}
-              masaGrasa={masaGrasa}
-              masaOsea={masaOsea}
-              PorcentajeOsea={PorcentajeOsea}
-              masaResidual={masaResidual}
-              PorcentajeResidual={PorcentajeResidual}
-              masaMuscular={masaMuscular}
-              PorcentajeMuscular={PorcentajeMuscular}
+              porcentajeGrasa={result}
+              fatMass={fatMass}
+              boneMass={boneMass}
+              PercentageOsea={PercentageOsea}
+              residualMass={residualMass}
+              PercentResidual={PercentResidual}
+              muscleMass={muscleMass}
+              MusclePercentage={MusclePercentage}
             />
           )}
-        {resultado !== null &&
-          resultado2 !== null &&
-          masaOsea !== null &&
-          PorcentajeOsea !== null &&
-          masaResidual !== null &&
-          PorcentajeResidual !== null &&
-          masaMuscular !== null &&
-          PorcentajeMuscular !== null && (
+        {result !== null &&
+          result2 !== null &&
+          boneMass !== null &&
+          PercentageOsea !== null &&
+          residualMass !== null &&
+          PercentResidual !== null &&
+          muscleMass !== null &&
+          MusclePercentage !== null && (
             <Graph
-              resultado={resultado}
-              resultado2={resultado2}
-              PorcentajeOsea={PorcentajeOsea}
-              PorcentajeResidual={PorcentajeResidual}
-              PorcentajeMuscular={PorcentajeMuscular}
+              result={result}
+              result2={result2}
+              PercentageOsea={PercentageOsea}
+              PercentResidual={PercentResidual}
+              MusclePercentage={MusclePercentage}
             />
           )}
       </div>
