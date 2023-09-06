@@ -5,15 +5,19 @@ Proyecto de Dashboard
 
 This project is a calculator of fat percentage, bone mass, residual mass and muscle mass where the results are displayed in table and graph format.
 
-## How to install the project
-To install the project you must enter the following command:
-
+## How to clone the repository
+to clone the repository you must do the following:
 ```bash or cmd 
-npm installhttps://github.com/Nerovelic/dashboard.git
+git clone ttps://github.com/Nerovelic/dashboard.git
 #or
-pnpm install https://github.com/Nerovelic/dashboard.git
+git clone https://github.com/Nerovelic/dashboard.git
 ```
 
+## How to install the project
+To install the project you must enter the following command:
+```bash or cmd 
+npm install
+```
 ## How to run the project
 In bash or cmd use these commands to run the project:
 ```bash or cmd 
