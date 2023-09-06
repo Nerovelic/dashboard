@@ -24,6 +24,7 @@ export default function Composition() {
   const [PercentageOsea, setBoneMassPer] = useState(null);
   const [MusclePercentage, setMuscularPer] = useState(null);
 
+  // This `useEffect` loads data previously stored in local storage and sets it to the state of the React component.
   useEffect(() => {
     const storedValues = JSON.parse(
       localStorage.getItem("bodyCompositionValues")
@@ -42,6 +43,8 @@ export default function Composition() {
     }
   }, []);
 
+  // This `useEffect` updates the local storage whenever the specified state values change,
+  // ensuring that the data is reflected in the local storage.
   useEffect(() => {
     const bodyCompositionValues = {
       genre,
@@ -72,6 +75,8 @@ export default function Composition() {
     age,
   ]);
 
+  // Esta función `calculateBoneMass` calcula la masa ósea basada en los valores de `size`, `bistyloid`, y `femur`, usando una fórmula específica.
+  // Luego, asigna el resultado a `boneMass`. Si falta algún valor, devuelve `null`.
   const calculateBoneMass = () => {
     if (size && bistyloid && femur) {
       heightSquared = Math.pow(parseFloat(size), 2);
@@ -90,6 +95,8 @@ export default function Composition() {
 
   let heightSquared = 0;
 
+  // This `useEffect` updates the local storage whenever the specified state values change,
+  // ensuring that the data is reflected in the local storage.
   const calculateResidualMass = () => {
     if (genre && weight) {
       weightKilograms = parseFloat(weight);
@@ -104,8 +111,11 @@ export default function Composition() {
 
   let weightKilograms = 0;
 
+  // The `handleSubmit` function calculates body composition data based on form data and sets it to the state of the React component.
   const handleSubmit = (e) => {
     e.preventDefault();
+    // This code block checks if all variables (genre, size, weight, tricep, bicep, subscapularis, suprailiac, bistyloid and femur)
+    // have defined values before further calculations.
     if (
       genre &&
       size &&
@@ -117,6 +127,7 @@ export default function Composition() {
       bistyloid &&
       femur
     ) {
+      // Calculate the logarithm in base 10 of the sum of values converted to skinfold numbers or set to 0 if it cannot be calculated.
       const log10 =
         Math.log10(
           parseFloat(tricep) +
@@ -127,18 +138,28 @@ export default function Composition() {
 
       let DC;
 
+      // Depending on the gender entered (male or female), it calculates a coefficient (DC) using a specific formula based on the previously
+      // calculated value of log10.
       if (genre === "hombre") {
         DC = 1.1765 - 0.0744 * log10;
       } else if (genre === "mujer") {
         DC = 1.1567 - 0.0717 * log10;
       }
-
+      // Calculates the body fat percentage using a previously calculated value (DC) in a specific formula.
       const percentageFatCorporal = 495 / DC - 450;
+      // Calculate body fat mass by multiplying body fat percentage by weight and dividing the result by 100.
       const fatMass = (percentageFatCorporal * weight) / 100;
+      // Calculate the percentage of residual mass by dividing the residual mass calculated by the `calculateResidualMass()`
+      // function by the weight and then multiplying by 100.
       const PercentResidual = (calculateResidualMass() * 100) / weight;
+      // Calculate the percentage of bone mass by dividing the bone mass calculated by the `calculateBoneMass()`
+      // function by the weight and multiplying by 100.
       const PercentageOsea = (calculateBoneMass() * 100) / weight;
+      // Calculate the percentage of muscle mass by subtracting the sum of the percentage of body fat,
+      // the percentage of residual mass and the percentage of bone mass at 100%.
       const PercentageMuscular =
         100 - (percentageFatCorporal + PercentResidual + PercentageOsea);
+      // Calculate muscle mass by multiplying the percentage of muscle mass by the weight and dividing the result by 100.
       const muscleMass = (PercentageMuscular * weight) / 100;
       setFatMass(fatMass);
       setResult(percentageFatCorporal);
@@ -158,6 +179,8 @@ export default function Composition() {
     }
   };
 
+  //The `handlePositiveInputChange` function checks if a value is greater than or equal to zero and, if so,
+  // sets it to a variable using the `setValue` function.
   const handlePositiveInputChange = (value, setValue) => {
     if (value >= 0) {
       setValue(value);
@@ -340,7 +363,8 @@ export default function Composition() {
             Limpiar Campos
           </button>
         </form>
-
+        // This code fragment conditionally renders a table component Table if
+        all variables in the conditions are different from null.
         {result !== null &&
           result2 !== null &&
           boneMass !== null &&
@@ -360,6 +384,8 @@ export default function Composition() {
               MusclePercentage={MusclePercentage}
             />
           )}
+        // This code fragment conditionally renders a graph component graph if
+        all variables in the conditions are different from null.
         {result !== null &&
           result2 !== null &&
           boneMass !== null &&

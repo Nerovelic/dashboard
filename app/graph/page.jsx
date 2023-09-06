@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 
+// This code exports a React component function called `Graph` that receives properties such as
+// `result`, `result2`, `PercentageOsea`, `PercentResidual`, and `MusclePercentage` for use in graphing body composition data.
 export default function Graph({
   result,
   result2,
@@ -26,12 +28,7 @@ export default function Graph({
           datasets: [
             {
               label: "Porcentaje",
-              data: [
-                result,
-                PercentageOsea,
-                PercentResidual,
-                MusclePercentage,
-              ],
+              data: [result, PercentageOsea, PercentResidual, MusclePercentage],
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",

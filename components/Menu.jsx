@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+// This code defines an array called `menuRoutes` that contains objects with paths and labels to create a menu on the web page.
 const menuRoutes = [
   {
     ruta: "/",
@@ -14,7 +14,7 @@ const menuRoutes = [
     label: "Composicion Corporal",
   },
 ];
-
+// This `Menu` function returns a navigation menu on the web page.
 function Menu() {
   return (
     <div className="w-[15%] p-5 bg-secondary min-h-screen">

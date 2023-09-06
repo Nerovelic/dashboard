@@ -1,3 +1,5 @@
+// This code exports a React component function called `Table` with properties such as `percentFat`, `fatMass`, `boneMass`, etc.
+// These props are used to display data in a table.
 export default function Table({
   porcentajeGrasa,
   fatMass,
@@ -8,6 +10,7 @@ export default function Table({
   muscleMass,
   MusclePercentage,
 }) {
+  // This code returns a table with body composition data, including percentages and kilograms for fat mass, bone mass, residual mass and muscle mass.
   return (
     <div>
       <h1 className="text-center text-white text-3xl mb-4">Tabla</h1>
