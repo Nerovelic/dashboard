@@ -180,8 +180,8 @@ export default function Composition() {
   };
 
   return (
-    <div className="bg-primary w-screen grid place-items-center">
-      <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center grid gap-5">
+    <div className="bg-primary w-screen grid place-items-center min-h-screen">
+      <div className="bg-[#ffffff8c] p-10 rounded-lg shadow-md text-center grid gap-5 md:min-h-screen">
         <h1 className="text-center mt-2">Composición Corporal</h1>
         <form className="grid gap-5 mt-10" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-5">
