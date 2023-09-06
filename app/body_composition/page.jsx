@@ -4,25 +4,29 @@ import Table from "../table/page";
 import Graph from "../graph/page";
 
 export default function Composition() {
-  const [genre, setGenre] = useState("");
-  const [tricep, setTricep] = useState("");
-  const [bicep, setBicep] = useState("");
-  const [subscapularis, setSubscapularis] = useState("");
-  const [suprailiac, setSuprailiac] = useState("");
-  const [bistyloid, setBistyloid] = useState("");
-  const [femur, setFemur] = useState("");
-  const [size, setSize] = useState("");
-  const [weight, setWeight] = useState("");
-  const [age, setAge] = useState("");
-  const [result, setResult] = useState(null);
-  const [result2, setResult2] = useState(null);
-  const [boneMass, setBoneMass] = useState(null);
-  const [residualMass, setResidualMass] = useState(null);
-  const [fatMass, setFatMass] = useState(null);
-  const [muscleMass, setMuscleMass] = useState(null);
-  const [PercentResidual, setResidualMassPer] = useState(null);
-  const [PercentageOsea, setBoneMassPer] = useState(null);
-  const [MusclePercentage, setMuscularPer] = useState(null);
+  const [data, setData] = useState({
+    genre: "",
+    tricep: "",
+    bicep: "",
+    subscapularis: "",
+    suprailiac: "",
+    bistyloid: "",
+    femur: "",
+    size: "",
+    weight: "",
+    age: "",
+    result: 0,
+    result2: 0,
+    boneMass: 0,
+    residualMass: 0,
+    fatMass: 0,
+    muscleMass: 0,
+    PercentResidual: 0,
+    PercentageOsea: 0,
+    MusclePercentage: 0,
+  });
+
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   // This `useEffect` loads data previously stored in local storage and sets it to the state of the React component.
   useEffect(() => {
@@ -30,67 +34,35 @@ export default function Composition() {
       localStorage.getItem("bodyCompositionValues")
     );
     if (storedValues) {
-      setGenre(storedValues.genre || "");
-      setTricep(storedValues.tricep || "");
-      setBicep(storedValues.bicep || "");
-      setSubscapularis(storedValues.subscapularis || "");
-      setSuprailiac(storedValues.suprailiac || "");
-      setBistyloid(storedValues.bistyloid || "");
-      setFemur(storedValues.femur || "");
-      setSize(storedValues.size || "");
-      setWeight(storedValues.weight || "");
-      setAge(storedValues.age || "");
+      setData((prevData) => ({
+        ...prevData,
+        ...storedValues,
+      }));
+      setIsDataLoaded(true); // Set isDataLoaded to true when data is loaded
     }
   }, []);
-
   // This `useEffect` updates the local storage whenever the specified state values change,
   // ensuring that the data is reflected in the local storage.
   useEffect(() => {
-    const bodyCompositionValues = {
-      genre,
-      tricep,
-      bicep,
-      subscapularis,
-      suprailiac,
-      bistyloid,
-      femur,
-      size,
-      weight,
-      age,
-    };
-    localStorage.setItem(
-      "bodyCompositionValues",
-      JSON.stringify(bodyCompositionValues)
-    );
-  }, [
-    genre,
-    tricep,
-    bicep,
-    subscapularis,
-    suprailiac,
-    bistyloid,
-    femur,
-    size,
-    weight,
-    age,
-  ]);
+    localStorage.setItem("bodyCompositionValues", JSON.stringify(data));
+  }, [data]);
 
   // Esta función `calculateBoneMass` calcula la masa ósea basada en los valores de `size`, `bistyloid`, y `femur`, usando una fórmula específica.
-  // Luego, asigna el resultado a `boneMass`. Si falta algún valor, devuelve `null`.
+  // Luego, asigna el resultado a `boneMass`. Si falta algún valor, devuelve `0`.
   const calculateBoneMass = () => {
-    if (size && bistyloid && femur) {
-      heightSquared = Math.pow(parseFloat(size), 2);
+    if (data.size && data.bistyloid && data.femur) {
+      heightSquared = Math.pow(parseFloat(data.size), 2);
       const boneMass =
         Math.pow(
-          ((((heightSquared * parseFloat(bistyloid)) / 100) *
-            parseFloat(femur)) /
+          ((((heightSquared * parseFloat(data.bistyloid)) / 100) *
+            parseFloat(data.femur)) /
             100) *
             400,
           0.712
         ) * 3.02;
       return boneMass;
     }
-    return null;
+    return 0;
   };
 
   let heightSquared = 0;
@@ -98,15 +70,15 @@ export default function Composition() {
   // This `useEffect` updates the local storage whenever the specified state values change,
   // ensuring that the data is reflected in the local storage.
   const calculateResidualMass = () => {
-    if (genre && weight) {
-      weightKilograms = parseFloat(weight);
-      if (genre === "hombre") {
+    if (data.genre && data.weight) {
+      weightKilograms = parseFloat(data.weight);
+      if (data.genre === "hombre") {
         return 0.24 * weightKilograms;
-      } else if (genre === "mujer") {
+      } else if (data.genre === "mujer") {
         return 0.21 * weightKilograms;
       }
     }
-    return null;
+    return 0;
   };
 
   let weightKilograms = 0;
@@ -117,73 +89,84 @@ export default function Composition() {
     // This code block checks if all variables (genre, size, weight, tricep, bicep, subscapularis, suprailiac, bistyloid and femur)
     // have defined values before further calculations.
     if (
-      genre &&
-      size &&
-      weight &&
-      tricep &&
-      bicep &&
-      subscapularis &&
-      suprailiac &&
-      bistyloid &&
-      femur
+      data.genre &&
+      data.size &&
+      data.weight &&
+      data.tricep &&
+      data.bicep &&
+      data.subscapularis &&
+      data.suprailiac &&
+      data.bistyloid &&
+      data.femur
     ) {
       // Calculate the logarithm in base 10 of the sum of values converted to skinfold numbers or set to 0 if it cannot be calculated.
       const log10 =
         Math.log10(
-          parseFloat(tricep) +
-            parseFloat(bicep) +
-            parseFloat(subscapularis) +
-            parseFloat(suprailiac)
+          parseFloat(data.tricep) +
+            parseFloat(data.bicep) +
+            parseFloat(data.subscapularis) +
+            parseFloat(data.suprailiac)
         ) || 0;
 
       let DC;
 
       // Depending on the gender entered (male or female), it calculates a coefficient (DC) using a specific formula based on the previously
       // calculated value of log10.
-      if (genre === "hombre") {
+      if (data.genre === "hombre") {
         DC = 1.1765 - 0.0744 * log10;
-      } else if (genre === "mujer") {
+      } else if (data.genre === "mujer") {
         DC = 1.1567 - 0.0717 * log10;
       }
       // Calculates the body fat percentage using a previously calculated value (DC) in a specific formula.
       const percentageFatCorporal = 495 / DC - 450;
       // Calculate body fat mass by multiplying body fat percentage by weight and dividing the result by 100.
-      const fatMass = (percentageFatCorporal * weight) / 100;
+      const fatMass = (percentageFatCorporal * data.weight) / 100;
       // Calculate the percentage of residual mass by dividing the residual mass calculated by the `calculateResidualMass()`
       // function by the weight and then multiplying by 100.
-      const PercentResidual = (calculateResidualMass() * 100) / weight;
+      const PercentResidual = (calculateResidualMass() * 100) / data.weight;
       // Calculate the percentage of bone mass by dividing the bone mass calculated by the `calculateBoneMass()`
       // function by the weight and multiplying by 100.
-      const PercentageOsea = (calculateBoneMass() * 100) / weight;
+      const PercentageOsea = (calculateBoneMass() * 100) / data.weight;
       // Calculate the percentage of muscle mass by subtracting the sum of the percentage of body fat,
       // the percentage of residual mass and the percentage of bone mass at 100%.
       const PercentageMuscular =
         100 - (percentageFatCorporal + PercentResidual + PercentageOsea);
       // Calculate muscle mass by multiplying the percentage of muscle mass by the weight and dividing the result by 100.
-      const muscleMass = (PercentageMuscular * weight) / 100;
-      setFatMass(fatMass);
-      setResult(percentageFatCorporal);
-      setResult2(DC);
-      setBoneMass(calculateBoneMass());
-      setResidualMass(calculateResidualMass());
-      setResidualMassPer(PercentResidual);
-      setBoneMassPer(PercentageOsea);
-      setMuscularPer(PercentageMuscular);
-      setMuscleMass(muscleMass);
+      const muscleMass = (PercentageMuscular * data.weight) / 100;
+      setData((prevData) => ({
+        ...prevData,
+        result: percentageFatCorporal,
+        result2: DC,
+        boneMass: calculateBoneMass(),
+        residualMass: calculateResidualMass(),
+        PercentResidual: PercentResidual,
+        PercentageOsea: PercentageOsea,
+        MusclePercentage: PercentageMuscular,
+        fatMass: fatMass,
+        muscleMass: muscleMass,
+      }));
     } else {
-      setResult(null);
-      setResult2(null);
-      setBoneMass(null);
-      setResidualMass(null);
-      setMuscleMass(null);
+      setData((prevData) => ({
+        ...prevData,
+        result: 0,
+        result2: 0,
+        boneMass: 0,
+        residualMass: 0,
+        fatMass: 0,
+        muscleMass: 0,
+      }));
     }
   };
 
-  //The `handlePositiveInputChange` function checks if a value is greater than or equal to zero and, if so,
-  // sets it to a variable using the `setValue` function.
-  const handlePositiveInputChange = (value, setValue) => {
+  // The `handlePositiveInputChange` function takes an event and a key as arguments. When a value is greater than or equal to zero in the event,
+  // it updates the existing data (prevData) with the new value in the specified key using the propagation operator (`...`).
+  const handlePositiveInputChange = (event, key) => {
+    const { value } = event.target;
     if (value >= 0) {
-      setValue(value);
+      setData((prevData) => ({
+        ...prevData,
+        [key]: value,
+      }));
     }
   };
 
@@ -196,8 +179,8 @@ export default function Composition() {
             <label>
               Género:
               <select
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
+                value={data.genre}
+                onChange={(e) => setData({ ...data, genre: e.target.value })}
                 className="ml-2"
               >
                 <option value="">Seleccionar</option>
@@ -210,13 +193,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={weight}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setWeight
-                  )
-                }
+                placeholder="kg"
+                value={data.weight}
+                onChange={(e) => handlePositiveInputChange(e, "weight")}
               />
             </label>
           </div>
@@ -226,10 +205,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={size}
-                onChange={(e) =>
-                  handlePositiveInputChange(parseFloat(e.target.value), setSize)
-                }
+                placeholder="metros"
+                value={data.size}
+                onChange={(e) => handlePositiveInputChange(e, "size")}
               />
             </label>
             <label>
@@ -237,10 +215,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={age}
-                onChange={(e) =>
-                  handlePositiveInputChange(parseFloat(e.target.value), setAge)
-                }
+                placeholder="años"
+                value={data.age}
+                onChange={(e) => handlePositiveInputChange(e, "age")}
               />
             </label>
           </div>
@@ -250,13 +227,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={bicep}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setBicep
-                  )
-                }
+                placeholder="mm"
+                value={data.bicep}
+                onChange={(e) => handlePositiveInputChange(e, "bicep")}
               />
             </label>
             <label>
@@ -264,13 +237,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={tricep}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setTricep
-                  )
-                }
+                placeholder="mm"
+                value={data.tricep}
+                onChange={(e) => handlePositiveInputChange(e, "tricep")}
               />
             </label>
           </div>
@@ -280,13 +249,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={subscapularis}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setSubscapularis
-                  )
-                }
+                placeholder="mm"
+                value={data.subscapularis}
+                onChange={(e) => handlePositiveInputChange(e, "subscapularis")}
               />
             </label>
             <label>
@@ -294,28 +259,19 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={suprailiac}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setSuprailiac
-                  )
-                }
+                placeholder="mm"
+                value={data.suprailiac}
+                onChange={(e) => handlePositiveInputChange(e, "suprailiac")}
               />
             </label>
-
             <label>
               Biestiloideo:
               <input
                 type="number"
                 className="ml-2"
-                value={bistyloid}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setBistyloid
-                  )
-                }
+                placeholder="cm"
+                value={data.bistyloid}
+                onChange={(e) => handlePositiveInputChange(e, "bistyloid")}
               />
             </label>
             <label>
@@ -323,13 +279,9 @@ export default function Composition() {
               <input
                 type="number"
                 className="ml-2"
-                value={femur}
-                onChange={(e) =>
-                  handlePositiveInputChange(
-                    parseFloat(e.target.value),
-                    setFemur
-                  )
-                }
+                placeholder="cm"
+                value={data.femur}
+                onChange={(e) => handlePositiveInputChange(e, "femur")}
               />
             </label>
           </div>
@@ -344,64 +296,71 @@ export default function Composition() {
             className="bg-tertiary text-black border-4 cursor-pointer mt-5 py-1 px-3"
             onClick={() => {
               localStorage.removeItem("bodyCompositionValues");
-              setGenre("");
-              setTricep("");
-              setBicep("");
-              setSubscapularis("");
-              setSuprailiac("");
-              setBistyloid("");
-              setFemur("");
-              setSize("");
-              setWeight("");
-              setResult(null);
-              setResult2(null);
-              setBoneMass(null);
-              setResidualMass(null);
-              setAge("");
+              setData({
+                genre: "",
+                tricep: "",
+                bicep: "",
+                subscapularis: "",
+                suprailiac: "",
+                bistyloid: "",
+                femur: "",
+                size: "",
+                weight: "",
+                age: "",
+                result: 0,
+                result2: 0,
+                boneMass: 0,
+                residualMass: 0,
+                fatMass: 0,
+                muscleMass: 0,
+                PercentResidual: 0,
+                PercentageOsea: 0,
+                MusclePercentage: 0,
+              });
             }}
           >
             Limpiar Campos
           </button>
         </form>
-        // This code fragment conditionally renders a table component Table if
-        all variables in the conditions are different from null.
-        {result !== null &&
-          result2 !== null &&
-          boneMass !== null &&
-          PercentageOsea !== null &&
-          residualMass !== null &&
-          PercentResidual !== null &&
-          muscleMass !== null &&
-          MusclePercentage !== null && (
-            <Table
-              porcentajeGrasa={result}
-              fatMass={fatMass}
-              boneMass={boneMass}
-              PercentageOsea={PercentageOsea}
-              residualMass={residualMass}
-              PercentResidual={PercentResidual}
-              muscleMass={muscleMass}
-              MusclePercentage={MusclePercentage}
-            />
-          )}
-        // This code fragment conditionally renders a graph component graph if
-        all variables in the conditions are different from null.
-        {result !== null &&
-          result2 !== null &&
-          boneMass !== null &&
-          PercentageOsea !== null &&
-          residualMass !== null &&
-          PercentResidual !== null &&
-          muscleMass !== null &&
-          MusclePercentage !== null && (
-            <Graph
-              result={result}
-              result2={result2}
-              PercentageOsea={PercentageOsea}
-              PercentResidual={PercentResidual}
-              MusclePercentage={MusclePercentage}
-            />
-          )}
+        {isDataLoaded && ( // Only shows table and graph if data is loaded.
+          <div>
+            {data.result !== 0 &&
+              data.result2 !== 0 &&
+              data.boneMass !== 0 &&
+              data.PercentageOsea !== 0 &&
+              data.residualMass !== 0 &&
+              data.PercentResidual !== 0 &&
+              data.muscleMass !== 0 &&
+              data.MusclePercentage !== 0 && (
+                <Table
+                  porcentajeGrasa={data.result}
+                  fatMass={data.fatMass}
+                  boneMass={data.boneMass}
+                  PercentageOsea={data.PercentageOsea}
+                  residualMass={data.residualMass}
+                  PercentResidual={data.PercentResidual}
+                  muscleMass={data.muscleMass}
+                  MusclePercentage={data.MusclePercentage}
+                />
+              )}
+            {data.result !== 0 &&
+              data.result2 !== 0 &&
+              data.boneMass !== 0 &&
+              data.PercentageOsea !== 0 &&
+              data.residualMass !== 0 &&
+              data.PercentResidual !== 0 &&
+              data.muscleMass !== 0 &&
+              data.MusclePercentage !== 0 && (
+                <Graph
+                  result={data.result}
+                  result2={data.result2}
+                  PercentageOsea={data.PercentageOsea}
+                  PercentResidual={data.PercentResidual}
+                  MusclePercentage={data.MusclePercentage}
+                />
+              )}
+          </div>
+        )}
       </div>
     </div>
   );

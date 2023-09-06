@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 
-// This code exports a React component function called `Graph` that receives properties such as
-// `result`, `result2`, `PercentageOsea`, `PercentResidual`, and `MusclePercentage` for use in graphing body composition data.
 export default function Graph({
   result,
   result2,
@@ -10,13 +8,20 @@ export default function Graph({
   PercentResidual,
   MusclePercentage,
 }) {
-  const chartRef = useRef(null);
+  const chartRef = useRef(0);
+  // To keep a reference to the current chart
+  const chartInstance = useRef(0);
 
   useEffect(() => {
     if (result !== null && result2 !== null) {
       const ctx = chartRef.current.getContext("2d");
 
-      new Chart(ctx, {
+      // Destroys the previous graphic if it exists
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+
+      chartInstance.current = new Chart(ctx, {
         type: "bar",
         data: {
           labels: [
