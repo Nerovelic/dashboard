@@ -7,7 +7,7 @@ This project is a calculator of fat percentage, bone mass, residual mass and mus
 
 ## How to clone the repository
 to clone the repository you must do the following:
-```bash or cmd 
+```bash
 git clone ttps://github.com/Nerovelic/dashboard.git
 #or
 git clone https://github.com/Nerovelic/dashboard.git
@@ -15,12 +15,12 @@ git clone https://github.com/Nerovelic/dashboard.git
 
 ## How to install the project
 To install the project you must enter the following command:
-```bash or cmd 
+```bash 
 npm install
 ```
 ## How to run the project
 In bash or cmd use these commands to run the project:
-```bash or cmd 
+```bash
 npm run dev
 #or
 pnpm run dev
