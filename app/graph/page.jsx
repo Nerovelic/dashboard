@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Chart from "chart.js/auto";
 
 export default function Graph({
@@ -11,12 +11,15 @@ export default function Graph({
   const chartRef = useRef(0);
   // To keep a reference to the current chart
   const chartInstance = useRef(0);
+  const [tableContainerSize, setTableContainerSize] = useState({
+    width: "auto", // Default width
+    height: "auto", // Default high
+  });
 
   useEffect(() => {
     if (result !== null && result2 !== null) {
       const ctx = chartRef.current.getContext("2d");
-
-      // Destroys the previous graphic if it exists
+      // Destroys the previous graphic if it exist
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
@@ -58,14 +61,32 @@ export default function Graph({
           },
         },
       });
+
+      // Assigns the width and height of the table container to the chart container
+      chartRef.current.parentNode.style.width = `${tableContainerSize.width}px`;
+      chartRef.current.parentNode.style.height = `${tableContainerSize.height}px`;
     }
   }, [result, result2, PercentageOsea, PercentResidual, MusclePercentage]);
+
+  // Gets the size of the table container and updates the status
+  useEffect(() => {
+    const tableContainer = document.getElementById("table-container");
+    if (tableContainer) {
+      setTableContainerSize({
+        width: "auto",
+        height: "auto",
+      });
+    }
+  }, []);
 
   return (
     <div>
       <h1 className="text-center text-white text-3xl mb-4">Gráfica</h1>
-      <div className="border border-gray-300 rounded-md overflow-hidden">
-        <canvas ref={chartRef} width="400" height="400"></canvas>
+      <div
+        id="table-container"
+        className="border border-gray-300 rounded-md overflow-hidden"
+      >
+        <canvas ref={chartRef}></canvas>
       </div>
     </div>
   );
