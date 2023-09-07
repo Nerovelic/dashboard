@@ -26,23 +26,55 @@ export default function Table({
           <tbody>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Grasa</td>
-              <td className="py-2 px-4">{percentageFatCorporal.toFixed(3)}%</td>
-              <td className="py-2 px-4">{fatMass.toFixed(3)} kg</td>
+              <td className="py-2 px-4">
+                {typeof percentageFatCorporal === "number"
+                  ? percentageFatCorporal.toFixed(3) + "%"
+                  : "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {typeof fatMass === "number"
+                  ? fatMass.toFixed(3) + "kg"
+                  : "N/A"}
+              </td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Osea</td>
-              <td className="py-2 px-4">{PercentageOsea.toFixed(3)}%</td>
-              <td className="py-2 px-4">{boneMass.toFixed(3)} kg</td>
+              <td className="py-2 px-4">
+                {typeof PercentageOsea === "number"
+                  ? PercentageOsea.toFixed(3) + "%"
+                  : "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {typeof boneMass === "number"
+                  ? boneMass.toFixed(3) + "kg"
+                  : "N/A"}
+              </td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Residual</td>
-              <td className="py-2 px-4">{PercentResidual.toFixed(2)}%</td>
-              <td className="py-2 px-4">{residualMass.toFixed(3)} kg</td>
+              <td className="py-2 px-4">
+                {typeof PercentResidual === "number"
+                  ? PercentResidual.toFixed(3) + "%"
+                  : "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {typeof residualMass === "number"
+                  ? residualMass.toFixed(3) + "kg"
+                  : "N/A"}
+              </td>
             </tr>
             <tr className="text-center">
               <td className="py-2 px-4 font-semibold">Masa Muscular</td>
-              <td className="py-2 px-4">{MusclePercentage.toFixed(3)}%</td>
-              <td className="py-2 px-4">{muscleMass.toFixed(3)} kg</td>
+              <td className="py-2 px-4">
+                {typeof MusclePercentage === "number"
+                  ? MusclePercentage.toFixed(3) + "%"
+                  : "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {typeof muscleMass === "number"
+                  ? muscleMass.toFixed(3) + "kg"
+                  : "N/A"}
+              </td>
             </tr>
           </tbody>
         </table>
