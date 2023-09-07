@@ -342,7 +342,7 @@ export default function Composition() {
               data.muscleMass !== 0 &&
               data.MusclePercentage !== 0 && (
                 <Table
-                  porcentajeGrasa={data.result}
+                  percentageFatCorporal={data.result}
                   fatMass={data.fatMass}
                   boneMass={data.boneMass}
                   PercentageOsea={data.PercentageOsea}
